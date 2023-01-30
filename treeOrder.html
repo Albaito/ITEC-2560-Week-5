@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Tree Order Form</title>
+
+  <style>
+      
+      input, select {
+          width: 100%;
+          padding: 5px;
+          margin: 5px 5px 5px 0px;
+          box-sizing: border-box;
+      }
+
+      input.error, select.error {
+        border: 2px red solid;
+      }
+
+  </style>
+
+</head>
+<body>
+
+    <h1>Minnesota Tree Order Form</h1>
+
+    <p>Enter information to order your tree. All fields are required.</p>
+
+    <h2>Order Information</h2>
+
+    <label for="homeowner-name">Homeowner Name</label><input id="homeowner-name" name="homeowner-name">
+    <br>
+    <label for="homeowner-house-number">House Number</label><input id="homeowner-house-number" name="homeowner-house-number">
+    <br>
+    <label for="homeowner-street-name">Street Name</label><input id="homeowner-street-name" name="homeowner-street-name">
+    <br>
+    <label for="city">City</label><input id="city" name="city"> 
+    <br>
+    <!-- All orders must be for Minnesota, so this input is not editable -->
+    <label for="state">State</label><input id="state" name="state" value="Minnesota" disabled> 
+    <br>
+    <label for="zipcode">Zip Code</label><input id="zipcode" name="zipcode">
+    <br>
+
+    <label for="tree-type">Tree Type</label>
+    <select id="tree-type">
+        <!-- Unselectable message shown. Since this will be required, it forces the user to actually pick a tree, not just click submit for the default first option -->
+        <option disabled selected value=""> Select a tree </option>  
+        <!-- The options that the user will be allowed to select, or choose from -->
+        <option name="tree-type">Cedar</option>
+        <option name="tree-type">Maple</option>
+        <option name="tree-type">Oak</option>
+    </select>
+    <br>
+
+    <button id="submit-order">Submit Order</button>    
+
+    <h2>Order Summary</h2>
+
+    <p id="order-summary">
+        <!-- TODO Use JavaScript to display the order information, 
+            only if all the required information is entered  -->
+    </p>
+    
+
+
+<script>
+
+    let homeownerNameInput = document.querySelector('#homeowner-name')
+    let homeownerHouseNumberInput = document.querySelector('#homeowner-house-number')
+    let homeownerStreetNameInput = document.querySelector('#homeowner-street-name')
+    let treeTypeSelect = document.querySelector('#tree-type')
+
+    // TODO create a variable for city input element
+    let cityInput = document.querySelector('#city')
+    // TODO create a variable for zip code input element
+    let zipcodeInput = document.querySelector('#zipcode')
+    
+    let submitButton = document.querySelector('#submit-order')
+
+    let orderSummaryParagraph = document.querySelector('#order-summary')
+
+    submitButton.addEventListener('click', function() {
+
+        let name = homeownerNameInput.value 
+        let houseNumber = homeownerHouseNumberInput.value
+        let streetName = homeownerStreetNameInput.value
+        let treeTypeText = treeTypeSelect.value
+        // TODO get the value from the input#city
+        let city = cityInput.value
+        // TODO get the value from the input#zipcode
+        let zipCode = zipcodeInput.value 
+        // TODO Validate that all six input and select elements have been completed
+
+        
+        
+        let errors = []
+       // following if statements are for input validation
+        if (name.length < 1){
+            errors.push('No input detected for name') 
+        }
+
+        if (houseNumber.length < 1){
+            errors.push('No input detected for house number')
+        }
+        if (Number.isInteger(parseInt(houseNumber)) == false){
+            errors.push('house number is a non-whole number')
+
+        }
+
+        if (streetName.length < 1){
+            errors.push('No input detected for street name')
+        }
+
+        if (treeTypeText == ''){
+            errors.push('Please select a tree type')
+        }
+
+        if  (city.length < 1){
+            errors.push('No input detected for city')
+        }
+
+        if (zipCode.length < 1) {
+            errors.push('No input detected for zip code')
+        }
+        if (Number.isInteger(parseInt(zipCode)) == false){
+            errors.push('Zip code is a non-whole number')
+        }
+        
+        if (zipCode < 55001 || zipCode > 56763){
+            errors.push('Invalid zip code, range must be between 55001-56763\n')
+        }
+        // end of input validation
+        
+        
+        if (errors.length > 0){
+            let formattedError = errors.join('\n')
+            alert(formattedError)
+        }
+        else {
+            let treeOrder = name + ', ' + houseNumber + ' ' + streetName +  + ' ' + city + ', MN ' + zipCode + ' ' + treeTypeText
+            orderSummaryParagraph.innerHTML = treeOrder
+        }
+    })
+        
+        /*
+        // code scraps because I was insistent on making things harder for myself
+        for (let x=0; x <= inputValues.length ; x++){
+            if (x==0) {
+               errors = isPresent(name, 'name', errors)  + '\n'
+            }
+            else if (x == 1){
+                errors = isPresent(houseNumber,'house number', errors)
+                errors = isWholeNumber(houseNumber, 'house number', errors) + '\n'
+            }
+            else if (x == 2){
+                
+            }
+            else if (x == 3){
+                // converts to string since it seems to be saving it as incorrect data type
+             if (treeTypeText  != 'Cedar' || treeTypeText != 'Maple' || treeTypeText != 'Oak'){
+                errors.push('please select a type of tree\n\n')
+             }
+            }
+            else if (x == 4){
+                errors = isPresent(city, 'city', errors) + '\n'
+            }
+            else if (x == 5){
+                errors = isPresent(zipCode, 'zip code', errors)
+                errors = isWholeNumber(zipCode, 'zip code', errors)
+                errors = isMinnesotaZip(zipCode, errors)
+            }
+        }
+        if (errors.length > 0){
+            formattedErrors = errors.join(', ')
+            alert(formattedErrors)
+        }
+        else {
+            for (i = 0; i<= inputValues.length; i++){
+
+            }
+        }
+        */
+
+         /*
+        // made this while reading the slideshow
+        //  - check they all have a value
+        let errorMessage = ''
+        errorMessage += isPresent(name, 'name')
+        
+        errorMessage += isPresent(houseNumber, 'house number')
+        errorMessage += 
+        errorMessage += isPresent(city, 'city')
+        errorMessage += isPresent(zipCode, 'zip code')
+        
+        errorMessage += isMinnesotaZip(zipCode)
+        if (errorMessage != ''){
+            alert(errorMessage)
+        }
+        else {
+            
+
+        }
+        
+    })
+    */
+    function isPresent (value, name) {
+        if (value.length < 1){
+            let errorsMessage = 'no input detected for ' + name + '\n'
+            
+            return errorsMessage
+        }  
+    }
+
+    function isWholeNumber(value, name) {
+        // parses value to convert data type
+        if (Number.isInteger(parseFloat(value)) == false){
+            returnString = name  + ' is non-numeric\n'
+            return returnString
+        }       
+    }    
+
+    function isMinnesotaZip(zip) {
+        
+        if (zip < 55001 && zip > 56763){
+            return 'Invalid zip code, range must be between 55001-56763\n'
+        }
+        return true
+         
+    }
+
+</script>
+
+</body>
+</html>
+
